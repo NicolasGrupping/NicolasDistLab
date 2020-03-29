@@ -12,7 +12,7 @@ public class client {
         ObjectOutputStream oos = null;
         ObjectInputStream ois = null;
         for(int i=0; i<5;i++){
-            socket = new Socket(host.getHostName(), 9876);
+            socket = new Socket(host.getHostName(), 1998);
             oos = new ObjectOutputStream(socket.getOutputStream());
             System.out.println("Sending request to Socket Server");
             if(i==4)oos.writeObject("Howdoe");
