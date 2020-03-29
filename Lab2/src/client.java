@@ -12,10 +12,10 @@ public class client {
         ObjectOutputStream oos = null;
         ObjectInputStream ois = null;
         for(int i=0; i<5;i++){
-            socket = new Socket(host.getHostName(), 1998);
+            socket = new Socket("143.129.39.106:30030" , 42069);
             oos = new ObjectOutputStream(socket.getOutputStream());
             System.out.println("Sending request to Socket Server");
-            if(i==4)oos.writeObject("oh no corona");
+            if(i==4)oos.writeObject("corona");
             else oos.writeObject(""+i);
             ois = new ObjectInputStream(socket.getInputStream());
             String message = (String) ois.readObject();
