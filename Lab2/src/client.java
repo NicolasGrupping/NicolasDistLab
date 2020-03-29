@@ -1,7 +1,9 @@
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.*;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class client {
     public static void main(String[] args) throws UnknownHostException, IOException, ClassNotFoundException, InterruptedException{
@@ -10,9 +12,7 @@ public class client {
         ObjectOutputStream oos = null;
         ObjectInputStream ois = null;
         for(int i=0; i<5;i++){
-            SocketAddress sockaddr = new InetSocketAddress("143.129.39.106", 30030);
-            socket = new Socket();
-            socket.connect(sockaddr, 30030);
+            socket = new Socket("10.0.14.3" , 42069);
             oos = new ObjectOutputStream(socket.getOutputStream());
             System.out.println("Sending request to Socket Server");
             if(i==4)oos.writeObject("corona");
