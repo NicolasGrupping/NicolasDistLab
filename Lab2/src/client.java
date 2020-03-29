@@ -15,7 +15,7 @@ public class client {
             socket = new Socket(host.getHostName(), 1998);
             oos = new ObjectOutputStream(socket.getOutputStream());
             System.out.println("Sending request to Socket Server");
-            if(i==4)oos.writeObject("Howdoe");
+            if(i==4)oos.writeObject("oh no corona");
             else oos.writeObject(""+i);
             ois = new ObjectInputStream(socket.getInputStream());
             String message = (String) ois.readObject();
