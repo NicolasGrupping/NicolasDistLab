@@ -5,28 +5,30 @@ import java.lang.ClassNotFoundException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class server {
+public class server implements Runnable{
 
-        private static ServerSocket host5Server;
-        private static int port = 1998;
+        private Socket socket;
 
-        public static void main(String args[]) throws IOException, ClassNotFoundException{
-            host5Server = new ServerSocket(port);
-            while(true){
-                System.out.println("Waiting for the client request");
-                Socket socket = host5Server.accept();
+        server(Socket serversocket){
+            this.socket = serversocket;
+        }
+
+        public void run(){
+            System.out.println("Waiting for the client request");
+            String message;
+            try {
                 ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-                String message = (String) ois.readObject();
+                message = (String) ois.readObject();
                 System.out.println("Message Received: " + message);
                 ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-                oos.writeObject("Hello you "+message);
+                oos.writeObject("Hello you"+message);
                 ois.close();
                 oos.close();
                 socket.close();
-                if(message.equalsIgnoreCase("oh no corona")) break;
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
             }
             System.out.println("Shutting down Socket server!!");
-            host5Server.close();
         }
 
 }

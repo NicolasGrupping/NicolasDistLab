@@ -8,15 +8,15 @@ import java.net.UnknownHostException;
 public class client {
     public static void main(String[] args) throws UnknownHostException, IOException, ClassNotFoundException, InterruptedException{
         InetAddress host = InetAddress.getLocalHost();
-        Socket socket = null;
-        ObjectOutputStream oos = null;
-        ObjectInputStream ois = null;
+        Socket socket;
+        ObjectOutputStream oos;
+        ObjectInputStream ois;
         for(int i=0; i<5;i++){
-            socket = new Socket("10.0.14.3" , 42069);
+            socket = new Socket(host.getHostName() , 1998);
             oos = new ObjectOutputStream(socket.getOutputStream());
             System.out.println("Sending request to Socket Server");
-            if(i==4)oos.writeObject("corona");
-            else oos.writeObject(""+i);
+            if(i==4)oos.writeObject(", oh no corona");
+            else oos.writeObject(" "+i);
             ois = new ObjectInputStream(socket.getInputStream());
             String message = (String) ois.readObject();
             System.out.println("Message: " + message);
