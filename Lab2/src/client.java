@@ -12,7 +12,7 @@ public class client {
         ObjectOutputStream oos;
         ObjectInputStream ois;
         for(int i=0; i<5;i++){
-            socket = new Socket("10.0.14.3" , 1998);
+            socket = new Socket(host.getHostName() , 1998);
             oos = new ObjectOutputStream(socket.getOutputStream());
             System.out.println("Sending request to Socket Server");
             if(i==4)oos.writeObject(", oh no corona");
