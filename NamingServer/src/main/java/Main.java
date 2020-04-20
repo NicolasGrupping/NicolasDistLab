@@ -2,8 +2,8 @@ class Main{
 	
 	public static void main(String[] args){
 		
-		FileServer fs = new FileServer("localhost:8081");
-		Client client = new Client("localhost:8081");
+		FileServer fs = new FileServer("http://10.0.13.17:8081");
+		Client client = new Client("http://10.0.13.17:8081");
 		
 		fs.addToNamingServer("10.0.13.5");
 		
@@ -11,8 +11,8 @@ class Main{
 
 		fs.addToNamingServer("10.0.13.5");
 		
-		fs.removeNode("10.0.13.5");
-		if (client.getIP("beny.txt") && client.getIP("Ronny.txt") && client.getIP("nastyImage.JPEG") && client.getIP("Dirtypic.tif") && client.getIP("bruno.json") && client.getIP("robert.xml")){
+		fs.removeNode("10.0.13.17");
+		if (client.getIP("cookie.txt") && client.getIP("testtest.txt")){
 
 			System.out.println("IP adresses have been found");
 	
