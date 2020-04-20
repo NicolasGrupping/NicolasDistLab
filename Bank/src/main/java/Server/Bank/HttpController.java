@@ -1,6 +1,7 @@
 package Server.Bank;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,36 +10,50 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 
 @RestController
 public class HttpController {
     private final AccountRepository repository;
+    private final AccountResourceAssembler assembler;
 
-    HttpController(AccountRepository repository) {
+
+    HttpController(AccountRepository repository, AccountResourceAssembler assembler) {
         this.repository = repository;
+        this.assembler = assembler;
     }
 
     // Aggregate root
 
     @GetMapping("/Accounts")
-    List<Account> all() {
-        return repository.findAll();
+    CollectionModel<EntityModel<Account>> all() {
+
+        List<EntityModel<Account>> Accounts = repository.findAll().stream()
+                .map(assembler::toModel)
+                .collect(Collectors.toList());
+
+        return new CollectionModel<>(Accounts,
+                linkTo(methodOn(HttpController.class).all()).withSelfRel());
     }
 
-    @PostMapping("/Accounts")
+    @PostMapping("/newAccount")
     Account newAccount(@RequestBody Account newAccount) {
         return repository.save(newAccount);
     }
 
     // Single item
 
-    @GetMapping("/Accounts/{id}")
-    Account one(@PathVariable Long id) {
+    @GetMapping("/getAccount/{id}")
+    EntityModel<Account> one(@PathVariable Long id) {
 
-        return repository.findById(id).orElseThrow(() -> new AccountNotFoundException(id));
+        Account account = repository.findById(id).orElseThrow(() -> new AccountNotFoundException(id));
+
+        return assembler.toModel(account);
     }
 
-    @PutMapping("/Accounts/{id}")
+    @PutMapping("/changeAccount/{id}")
     Account replaceAccount(@RequestBody Account newAccount, @PathVariable Long id) {
 
         return repository.findById(id).map(Account -> {
@@ -52,7 +67,7 @@ public class HttpController {
                 });
     }
 
-    @DeleteMapping("/Accounts/{id}")
+    @DeleteMapping("/deleteAccount/{id}")
     void deleteEmployee(@PathVariable Long id) {
         repository.deleteById(id);
     }
